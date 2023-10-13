@@ -12,6 +12,8 @@
     crossorigin="anonymous"
         referrerpolicy="no-referrer" />
 
+    <script src="//unpkg.com/alpinejs" defer></script>
+
     <title>Laragigs</title>
     @vite('resources/css/app.css')
 </head>
@@ -51,15 +53,18 @@
     </nav>
 
     <main>
-        @yield('content')
+        {{ $slot }}
     </main>
 
     <footer
         class="sticky top-full w-full flex items-center justify-start font-bold bg-laravel bg-red-500 text-white h-24 mt-10 opacity-90 md:justify-center">
         <p class="ml-2">Copyright &copy; 2022, All Rights reserved</p>
 
-        <a href="/listings/create" class="absolute top-1/3 right-10 bg-black text-white py-2 px-5">Post Job</a>
+        <a href="{{ url('/listings/create') }}" class="absolute top-1/3 right-10 bg-black text-white py-2 px-5">Post
+            Job</a>
     </footer>
+
+    <x-message />
 </body>
 
 </html>
