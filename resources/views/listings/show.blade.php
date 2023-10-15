@@ -38,5 +38,19 @@
                 </div>
             </div>
         </x-card>
+
+        <x-card class="mt-4 p-2 flex space-x-6">
+            <a href="{{ url('listings/' . $listing->id . '/edit') }}">
+                <i class="fa-solid fa-pen-to-square"></i> Edit
+            </a>
+
+            <form action="{{ url('/listings/' . $listing->id) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button class="text-red-500">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </form>
+        </x-card>
     </div>
 </x-layout>
