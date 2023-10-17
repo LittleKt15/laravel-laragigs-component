@@ -45,6 +45,8 @@ class ListingController extends Controller
             $data['logo'] = $request->file('logo')->store('logos', 'public');
         }
 
+        $data['user_id'] = auth()->id();
+
         Listing::create($data);
 
         return redirect('/')->with('message', 'Listing Created!');
@@ -59,6 +61,10 @@ class ListingController extends Controller
 
     public function update(Request $request, Listing $listing)
     {
+        if ($listing->user_id != auth()->id()) {
+            abort(403, 'Unauthorized Action');
+        }
+
         $data = $request->validate([
             'title' => 'required',
             'company' => 'required|unique:listings,company,' . $listing->id,
@@ -84,10 +90,19 @@ class ListingController extends Controller
 
     public function destroy(Listing $listing)
     {
+        if ($listing->user_id != auth()->id()) {
+            abort(403, 'Unauthorized Action');
+        }
+
         if ($listing->logo) {
             Storage::disk('public')->delete($listing->logo);
         }
         $listing->delete();
         return redirect('/')->with('message', 'Listing Deleted!');
+    }
+
+    public function manage()
+    {
+        return view('listings.manage', ['listings' => auth()->user()->listings()->get()]);
     }
 }
